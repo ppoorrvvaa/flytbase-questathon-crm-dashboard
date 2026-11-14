@@ -2,12 +2,13 @@
 
 import useSWR from "swr"
 import { useState } from "react"
-import { RefreshCw, ShieldCheck, Factory } from "lucide-react"
+import { Anchor, Building2, Factory, House, RefreshCw, ShieldCheck, type LucideIcon } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { AccountView } from "@/components/dashboard/account-view"
 import { SyncStatus } from "@/components/dashboard/sync-status"
-import type { Book, McpEnvelope, Signals } from "@/lib/types"
+import type { Account, Book, McpEnvelope, Signals } from "@/lib/types"
 
 const fetcher = async <T,>(url: string): Promise<T> => {
   const res = await fetch(url)
@@ -15,10 +16,21 @@ const fetcher = async <T,>(url: string): Promise<T> => {
   return res.json()
 }
 
-const TABS = [
-  { id: "A", label: "Account A (Police)", icon: ShieldCheck },
-  { id: "B", label: "Account B (Industrial)", icon: Factory },
-] as const
+const SECTOR_RULES: { pattern: RegExp; label: string; icon: LucideIcon }[] = [
+  { pattern: /police|constabulary|force/i, label: "Police", icon: ShieldCheck },
+  { pattern: /industrial|manufactur|plant/i, label: "Industrial", icon: Factory },
+  { pattern: /harbour|harbor|port/i, label: "Harbour", icon: Anchor },
+  { pattern: /estate|residen|housing/i, label: "Estate", icon: House },
+]
+
+function tabFor(account: Account) {
+  const sector = SECTOR_RULES.find((r) => r.pattern.test(account.name))
+  const isNew = Boolean(account.released_at)
+  const label = isNew
+    ? account.name.split(" ")[0]
+    : `Account ${account.id}${sector ? ` (${sector.label})` : ""}`
+  return { id: account.id, label, icon: sector?.icon ?? Building2, isNew }
+}
 
 export function Dashboard() {
   const [refreshing, setRefreshing] = useState(false)
@@ -81,28 +93,35 @@ export function Dashboard() {
         ) : !book.data ? (
           <DashboardSkeleton />
         ) : (
-          <Tabs defaultValue="A" className="gap-6">
-            <TabsList className="h-10">
-              {TABS.map((t) => (
-                <TabsTrigger key={t.id} value={t.id} className="gap-2 px-4">
-                  <t.icon className="size-4" aria-hidden="true" />
-                  {t.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {TABS.map((t) => {
-              const account = accounts.find((a) => a.id === t.id)
-              return (
-                <TabsContent key={t.id} value={t.id}>
-                  {account ? (
-                    <AccountView account={account} signals={signalList} />
-                  ) : (
-                    <p className="text-sm text-muted-foreground">No data for account {t.id}.</p>
-                  )}
+          accounts.length === 0 ? (
+            <p className="text-sm text-muted-foreground">The MCP server returned no accounts.</p>
+          ) : (
+            <Tabs defaultValue={accounts[0].id} className="gap-6">
+              <div className="overflow-x-auto">
+                <TabsList className="h-10">
+                  {accounts.map((account) => {
+                    const t = tabFor(account)
+                    return (
+                      <TabsTrigger key={t.id} value={t.id} className="gap-2 px-4">
+                        <t.icon className="size-4" aria-hidden="true" />
+                        {t.label}
+                        {t.isNew && (
+                          <Badge variant="secondary" className="h-5 bg-primary/10 px-1.5 text-[10px] text-primary">
+                            New
+                          </Badge>
+                        )}
+                      </TabsTrigger>
+                    )
+                  })}
+                </TabsList>
+              </div>
+              {accounts.map((account) => (
+                <TabsContent key={account.id} value={account.id}>
+                  <AccountView account={account} signals={signalList} />
                 </TabsContent>
-              )
-            })}
-          </Tabs>
+              ))}
+            </Tabs>
+          )
         )}
       </main>
     </div>

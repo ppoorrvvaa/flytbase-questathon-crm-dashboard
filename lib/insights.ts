@@ -129,6 +129,13 @@ export function stoppedDocks(signals: Signal[]) {
     .map(([dock, d]) => ({ dock, earlierFlights: d.early }))
 }
 
+function minutesToLabel(minutes: number) {
+  const days = Math.round(minutes / (24 * 60))
+  if (days >= 60) return `~${Math.round(days / 30)} months`
+  if (days >= 1) return `${days} day${days === 1 ? "" : "s"}`
+  return `${Math.max(1, Math.round(minutes / 60))} hours`
+}
+
 const fmtMoney = (n: number) =>
   new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n)
 
@@ -211,6 +218,63 @@ export function buildFirstMoves(account: Account, signals: Signal[]): Move[] {
     })
   }
 
+  if (account.id === "K") {
+    const golive = opp("k_golive_27s")
+    if (golive?.blocker?.status === "open") {
+      moves.push({
+        id: "k_golive_plan",
+        title: "Send Dana Whitfield a written go-live plan for the north entrance",
+        detail:
+          "The dock was installed but never commissioned and nobody on site can fly it. Plan: commission and test-fly with a FlytBase engineer, certify two estate staff, and set up night patrol of the entrances, which is what the estate actually needs.",
+        owner: "CSM + Field engineer",
+        due: "Before the go-live plan deadline",
+        unlocks: golive.worth_up_to ? `${fmtMoney(golive.worth_up_to)} — the dock finally flies` : undefined,
+      })
+    }
+    moves.push({
+      id: "k_insurer",
+      title: "Get the dock declared to the insurer through Lucy Pratt",
+      detail:
+        "The property insurance requires new aerial equipment to be notified before use and the dock is not declared. No flight can happen until it is. Send Lucy the equipment details and ask what the policy needs.",
+      owner: "CSM",
+      due: "This week",
+      unlocks: "Removes the legal block on the first flight",
+    })
+    moves.push({
+      id: "k_board",
+      title: "Put the pilot course in front of Graham Okafor before the board vote",
+      detail:
+        "Any spend beyond the original purchase needs a residents' board vote, and residents already ask why the drone never flew. Bring a short paper: the two-person certification course, the go-live date, and a first night-patrol result if possible.",
+      owner: "CSM + Account executive",
+      due: "Before the next board meeting",
+      unlocks: "Funds the €4,000 certification offer and saves the renewal vote",
+    })
+  }
+
+  if (account.id === "H") {
+    const renewal = opp("h_renewal_27s")
+    if (renewal?.blocker?.status === "open") {
+      moves.push({
+        id: "h_finance_case",
+        title: "Build the saving case with Priya Nair from the flight log",
+        detail:
+          "The 400,000 a year is Marcus Hale's own estimate of patrol hours the docks could replace, and finance has never seen the workings. Rebuild it from real flights and patrol contracts with finance in the room, before the renewal decision.",
+        owner: "CSM + Finance sponsor",
+        due: "Ahead of the renewal decision",
+        unlocks: renewal.worth_up_to ? `${fmtMoney(renewal.worth_up_to)} — six-dock renewal` : undefined,
+      })
+    }
+    moves.push({
+      id: "h_handover",
+      title: "Capture Tom Reyes's rollout knowledge before he leaves",
+      detail:
+        "The rollout contractor holds how the docks and alert rota actually work. Deliver the written rollout and alert-rota playbook with him while he is still on site.",
+      owner: "CSM + Solutions engineer",
+      due: "Before the contractor's last day",
+      unlocks: "€12,000 playbook offer and a programme that survives the handover",
+    })
+  }
+
   for (const o of account.opportunities) {
     if (moves.length >= 3) break
     if (o.blocker?.status === "open" && !moves.some((m) => m.unlocks?.includes(o.title))) {
@@ -227,12 +291,18 @@ export function buildRisks(account: Account, signals: Signal[]): Risk[] {
     risks.push({ id: s.id, title: s.title.replace(/^[^:]+:\s*/, ""), detail: s.summary, severity, when: s.dated, source: "Live signal" })
   }
   for (const d of account.deadlines.filter((d) => !d.passed)) {
+    const isTender = account.id === "A" && /tender/i.test(d.text)
+    const tied = account.opportunities.find((o) => o.deadline?.text === d.text && o.blocker?.status === "open")
     risks.push({
       id: `deadline_${d.text.slice(0, 16)}`,
-      title: "Tender specification locks",
-      detail: `${d.text} No costed operating model exists and nobody has agreed who would fly 300 docks.`,
-      severity: d.soon ? "critical" : "high",
-      when: d.soon ? "Soon" : "Date not confirmed",
+      title: isTender ? "Tender specification locks" : d.text,
+      detail: isTender
+        ? `${d.text} No costed operating model exists and nobody has agreed who would fly 300 docks.`
+        : tied
+          ? `Lands while "${tied.title}" is still blocked: ${tied.blocker?.text}.`
+          : "Open deadline with nothing on file showing it will be met.",
+      severity: d.soon || (tied && d.minute != null && d.minute <= 7 * 24 * 60) ? "critical" : "high",
+      when: d.minute != null ? `In ${minutesToLabel(d.minute)}` : d.soon ? "Soon" : "Date not confirmed",
       source: "Deadline",
     })
   }
@@ -280,8 +350,14 @@ export function buildUnknowns(account: Account, signals: Signal[]): Unknown[] {
   if (signalsFor(account, signals).some((s) => s.id === "champion_leaves")) {
     unknowns.push({ id: "successor", question: "Who replaces Rhys Calder?", why: "No successor named. Every call on file was with him alone.", ask: "Ask Rhys directly for the name and a joint intro" })
   }
-  for (const d of account.deadlines.filter((d) => !d.passed)) {
-    unknowns.push({ id: `date_${d.text.slice(0, 10)}`, question: "When exactly does the tender spec lock?", why: d.text, ask: "Confirm the date with Hannah Doyle (procurement)" })
+  for (const d of account.deadlines.filter((d) => !d.passed && d.minute == null)) {
+    const isTender = account.id === "A" && /tender/i.test(d.text)
+    unknowns.push({
+      id: `date_${d.text.slice(0, 10)}`,
+      question: isTender ? "When exactly does the tender spec lock?" : `When is "${d.text}"?`,
+      why: d.text,
+      ask: isTender ? "Confirm the date with Hannah Doyle (procurement)" : "Confirm the date with the account owner",
+    })
   }
   return unknowns
 }

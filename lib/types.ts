@@ -23,6 +23,7 @@ export interface Deadline {
   passed: boolean
   met?: boolean
   moves_left?: number | null
+  minute?: number
 }
 
 export interface Opportunity {
@@ -53,6 +54,7 @@ export interface Account {
   opportunities: Opportunity[]
   offers: Offer[]
   deadlines: Deadline[]
+  released_at?: string
 }
 
 export interface Book {

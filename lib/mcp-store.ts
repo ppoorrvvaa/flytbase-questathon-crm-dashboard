@@ -6,11 +6,20 @@ import { callTool, McpRateLimitError } from "@/lib/mcp"
 import type { McpEnvelope, Source } from "@/lib/types"
 import accountsSnapshot from "@/data/accounts.json"
 import signalsSnapshot from "@/data/signals.json"
+import kestrelSnapshot from "@/data/new-account-K.json"
+import brindleSnapshot from "@/data/new-account-H.json"
 
 // The MCP server allows one call a minute per token, so every answer is saved here
 // and the dashboard reads from this store. Snapshots seed it on a cold start.
-export const READ_TOOLS = ["get_my_accounts", "get_signals", "list_notes"] as const
+export const READ_TOOLS = ["get_my_accounts", "get_signals", "list_notes", "get_new_account"] as const
 export type ReadTool = (typeof READ_TOOLS)[number]
+
+// Accounts released after the morning via get_new_account (ids from whoami's new_accounts).
+export const NEW_ACCOUNT_IDS = ["K", "H"] as const
+export type AccountId = "A" | "B" | (typeof NEW_ACCOUNT_IDS)[number]
+export const ACCOUNT_IDS: readonly string[] = ["A", "B", ...NEW_ACCOUNT_IDS]
+
+const entryKey = (tool: ReadTool, account?: string) => (account ? `${tool}:${account}` : tool)
 
 const CALL_INTERVAL_MS = 60_000
 const STORE_FILE = path.join(os.tmpdir(), "cs-crm-mcp-store.json")
@@ -36,6 +45,16 @@ function initialState(): StoreState {
     entries: {
       get_my_accounts: { data: accountsSnapshot, fetchedAt: SNAPSHOT_TIME, source: "snapshot" },
       get_signals: { data: signalsSnapshot, fetchedAt: SNAPSHOT_TIME, source: "snapshot" },
+      "get_new_account:K": {
+        data: kestrelSnapshot,
+        fetchedAt: new Date(kestrelSnapshot.exported_at).toISOString(),
+        source: "snapshot",
+      },
+      "get_new_account:H": {
+        data: brindleSnapshot,
+        fetchedAt: new Date(brindleSnapshot.exported_at).toISOString(),
+        source: "snapshot",
+      },
     },
     lastCallAt: 0,
     blockedUntil: 0,
@@ -56,6 +75,11 @@ async function getState(): Promise<StoreState> {
     } catch {
       // No saved store yet
     }
+  }
+  // Seeds added after the store was first created (e.g. newly released accounts) fill any gaps.
+  const entries = globalStore.__mcpStore.entries
+  for (const [key, seed] of Object.entries(initialState().entries)) {
+    if (!entries[key]) entries[key] = seed
   }
   return globalStore.__mcpStore
 }
@@ -99,9 +123,13 @@ async function spendCall<T>(state: StoreState, run: () => Promise<T>): Promise<T
   }
 }
 
-export async function readTool<T>(tool: ReadTool, { refresh = false } = {}): Promise<McpEnvelope<T | null>> {
+export async function readTool<T>(
+  tool: ReadTool,
+  { refresh = false, account }: { refresh?: boolean; account?: string } = {},
+): Promise<McpEnvelope<T | null>> {
   const state = await getState()
-  const cached = state.entries[tool]
+  const key = entryKey(tool, account)
+  const cached = state.entries[key]
   const wait = secondsUntilNextCall(state)
 
   const fromCache = (notice?: string): McpEnvelope<T | null> => ({
@@ -119,9 +147,9 @@ export async function readTool<T>(tool: ReadTool, { refresh = false } = {}): Pro
   }
 
   try {
-    const data = await spendCall(state, () => callTool<T>(tool))
+    const data = await spendCall(state, () => callTool<T>(tool, account ? { account } : {}))
     const entry: Entry = { data, fetchedAt: new Date().toISOString(), source: "live" }
-    state.entries[tool] = entry
+    state.entries[key] = entry
     await persist(state)
     return { tool, data, source: "live", fetchedAt: entry.fetchedAt, nextCallInSeconds: secondsUntilNextCall(state) }
   } catch (err) {
@@ -129,7 +157,16 @@ export async function readTool<T>(tool: ReadTool, { refresh = false } = {}): Pro
   }
 }
 
-export async function writeNote(args: { account: "A" | "B"; kind: string; text: string; title?: string }) {
+// Saved new-account books, read from the store only so loading the dashboard never spends a call.
+export async function cachedNewAccounts<T>() {
+  const state = await getState()
+  return NEW_ACCOUNT_IDS.flatMap((id) => {
+    const entry = state.entries[entryKey("get_new_account", id)]
+    return entry ? [{ id, data: entry.data as T, fetchedAt: entry.fetchedAt, source: entry.source }] : []
+  })
+}
+
+export async function writeNote(args: { account: AccountId; kind: string; text: string; title?: string }) {
   const state = await getState()
   const wait = secondsUntilNextCall(state)
   if (wait > 0) {

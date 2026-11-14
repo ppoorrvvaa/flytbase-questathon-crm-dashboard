@@ -1,0 +1,499 @@
+{
+ "format": "account-quest-v2-export/1",
+ "player": "c31379fb-d30e-493d-a3e5-0992ae1b0eb2",
+ "exported_at": "2026-11-14T07:54:57.840Z",
+ "minute": 102,
+ "world_closed": true,
+ "accounts": [
+  {
+   "id": "A",
+   "name": "Eastern Counties Police Alliance",
+   "official_story": "Rollout under way. 4 forces, 35 docks, 300-dock framework tender in preparation.",
+   "stakeholders": [
+    {
+     "id": "rhys_calder",
+     "name": "Rhys Calder",
+     "role": "Alliance drone programme lead",
+     "relationship": "warm",
+     "available": true
+    },
+    {
+     "id": "karen_mbeki",
+     "name": "Insp. Karen Mbeki",
+     "role": "Drone unit inspector, Westmere",
+     "relationship": "warm",
+     "available": true
+    },
+    {
+     "id": "fatima_osei",
+     "name": "Fatima Osei",
+     "role": "Data protection officer, Tarn Valley",
+     "relationship": "neutral",
+     "available": true
+    },
+    {
+     "id": "ewan_brooks",
+     "name": "Ewan Brooks",
+     "role": "Finance business partner, Metro Central",
+     "relationship": "neutral",
+     "available": true
+    },
+    {
+     "id": "hannah_doyle",
+     "name": "Hannah Doyle",
+     "role": "Alliance procurement lead",
+     "relationship": "neutral",
+     "available": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "rc_appetite_0",
+     "text": "All four forces are keen.",
+     "said_by": "Rhys Calder",
+     "status": "claim",
+     "learned_at_minute": 7
+    },
+    {
+     "id": "rc_appetite_2",
+     "text": "Only Westmere and Metro Central fly operationally. Tarn Valley has never flown a live mission and Norwold only trains.",
+     "said_by": "Rhys Calder",
+     "status": "told",
+     "learned_at_minute": 7
+    },
+    {
+     "id": "rc_funding_0",
+     "text": "The alliance has the budget.",
+     "said_by": "Rhys Calder",
+     "status": "claim",
+     "learned_at_minute": 9
+    },
+    {
+     "id": "rc_funding_2",
+     "text": "There is no pooled budget. Each force funds from its own budget and each chief finance officer must approve a call-off.",
+     "said_by": "Rhys Calder",
+     "status": "told",
+     "learned_at_minute": 9
+    },
+    {
+     "id": "rc_tender_0",
+     "text": "A 300-dock framework tender, spec being finalised.",
+     "said_by": "Rhys Calder",
+     "status": "told",
+     "learned_at_minute": 11
+    },
+    {
+     "id": "rc_tender_2",
+     "text": "The tender specification locks soon (see Deadlines). It has no costed operating model, and nobody has agreed who would fly 300 docks.",
+     "said_by": "Rhys Calder",
+     "status": "told",
+     "learned_at_minute": 11
+    },
+    {
+     "id": "rc_stadium_0",
+     "text": "Westmere's stadium project is a 30-dock opportunity.",
+     "said_by": "Rhys Calder",
+     "status": "claim",
+     "learned_at_minute": 20
+    },
+    {
+     "id": "km_usage_0",
+     "text": "We're flying all the time.",
+     "said_by": "Insp. Karen Mbeki",
+     "status": "told",
+     "learned_at_minute": 22
+    },
+    {
+     "id": "km_usage_1",
+     "text": "14 of 18 docks flew last month, mostly patrol support and missing-person searches.",
+     "said_by": "Insp. Karen Mbeki",
+     "status": "verified",
+     "verified_by": "flight_log_force_month",
+     "learned_at_minute": 22
+    },
+    {
+     "id": "km_value_2",
+     "text": "Two missing-person finds in under 12 minutes against about 40 for the helicopter. These are anecdotes. Nobody has compared cost per flight.",
+     "said_by": "Insp. Karen Mbeki",
+     "status": "told",
+     "learned_at_minute": 24
+    },
+    {
+     "id": "km_others_2",
+     "text": "Tarn Valley's data protection officer has not signed off. Norwold's chief constable is cautious after a local privacy row.",
+     "said_by": "Insp. Karen Mbeki",
+     "status": "told",
+     "learned_at_minute": 28
+    },
+    {
+     "id": "kb_stadium_view",
+     "text": "The superintendent thinks 30 docks is unrealistic with current staffing. Nobody has asked her.",
+     "said_by": "Insp. Karen Mbeki",
+     "status": "told",
+     "learned_at_minute": 29
+    },
+    {
+     "id": "km_staff_2",
+     "text": "Six officers who also do other duties. Overtime is the main cost. Scaling to 30 docks needs nine more trained operators and shift cover.",
+     "said_by": "Insp. Karen Mbeki",
+     "status": "told",
+     "learned_at_minute": 29
+    },
+    {
+     "id": "rc_stadium_3",
+     "text": "The stadium idea came from one superintendent's chat with the stadium operator. No funding, no event-day policing plan, and approval is needed before the specification locks.",
+     "said_by": "Rhys Calder",
+     "status": "told",
+     "learned_at_minute": 39
+    },
+    {
+     "id": "fo_dpia_0",
+     "text": "We are working through the assessment and it is not finished.",
+     "said_by": "Fatima Osei",
+     "status": "told",
+     "learned_at_minute": 41
+    },
+    {
+     "id": "fo_dpia_2",
+     "text": "It cannot be signed until we receive the data-flow documents we asked the FlytBase support desk for four months ago. Nobody replied.",
+     "said_by": "Fatima Osei",
+     "status": "told",
+     "learned_at_minute": 41
+    },
+    {
+     "id": "fo_needs_3",
+     "text": "With data flows, retention periods, video storage location and access controls I can finish in three weeks. Norwold is waiting to copy my assessment.",
+     "said_by": "Fatima Osei",
+     "status": "told",
+     "learned_at_minute": 43
+    },
+    {
+     "id": "pj_ticket",
+     "text": "The Tarn Valley ticket asking for data-flow documents was logged four months ago and never answered. It sits in the support queue unassigned.",
+     "said_by": "Pranjal Suyal",
+     "status": "told",
+     "learned_at_minute": 52
+    },
+    {
+     "id": "srv_dataflow",
+     "text": "Engineering can produce the data-flow pack (flows, retention, video storage location, access controls) in a week, with the CSM owning the ask: sending it, chasing it, answering the DPO.",
+     "said_by": "SRV",
+     "status": "told",
+     "learned_at_minute": 54
+    }
+   ],
+   "opportunities": [
+    {
+     "id": "a_renewal",
+     "title": "Renew the alliance contract (35 docks)",
+     "stage": "qualified",
+     "worth_up_to": 350000,
+     "size": null,
+     "blocker": {
+      "text": "Nobody can show which forces actually use the docks",
+      "status": "open"
+     },
+     "evidence": [
+      "rc_appetite_0",
+      "rc_appetite_2",
+      "km_usage_1",
+      "km_value_2",
+      "flight_log_force_month"
+     ],
+     "deadline": null
+    },
+    {
+     "id": "a_tarn",
+     "title": "Tarn Valley and Norwold go live",
+     "stage": "qualified",
+     "worth_up_to": 200000,
+     "size": null,
+     "blocker": {
+      "text": "The DPIA cannot be signed without the data-flow documents FlytBase never sent",
+      "status": "open"
+     },
+     "evidence": [
+      "rc_appetite_2",
+      "km_others_2",
+      "fo_dpia_2",
+      "fo_needs_3",
+      "pj_ticket",
+      "srv_dataflow",
+      "support_ticket_history"
+     ],
+     "deadline": null
+    },
+    {
+     "id": "a_westmere",
+     "title": "Scale Westmere's fleet",
+     "stage": "identified",
+     "worth_up_to": null,
+     "size": null,
+     "blocker": null,
+     "evidence": [
+      "km_staff_2",
+      "km_value_2",
+      "flight_log_force_month"
+     ],
+     "deadline": null
+    },
+    {
+     "id": "a_tender",
+     "title": "Position for the 300-dock framework tender",
+     "stage": "identified",
+     "worth_up_to": null,
+     "size": null,
+     "blocker": null,
+     "evidence": [
+      "rc_tender_2",
+      "rc_funding_2",
+      "km_staff_2"
+     ],
+     "deadline": {
+      "text": "The tender specification locks. Whatever is not in it by then is out.",
+      "soon": false,
+      "passed": false,
+      "met": false,
+      "moves_left": null
+     }
+    }
+   ],
+   "offers": [
+    {
+     "id": "a_priority_support",
+     "title": "Priority support for the drone units",
+     "value": 60000,
+     "pitch_to": "Insp. Karen Mbeki",
+     "status": "won"
+    },
+    {
+     "id": "a_training",
+     "title": "Operator training for new pilots",
+     "value": 45000,
+     "pitch_to": "Insp. Karen Mbeki",
+     "status": "won"
+    },
+    {
+     "id": "a_extra_docks",
+     "title": "Extra docks for Metro Central",
+     "value": 180000,
+     "pitch_to": "Ewan Brooks",
+     "status": "open"
+    }
+   ],
+   "deadlines": [
+    {
+     "text": "The tender specification locks. Whatever is not in it by then is out.",
+     "passed": false
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": "Aldermoor Industrial Group",
+   "official_story": "ROI proven. 15 plants, 14 docks installed, 13 flying. Case study for 40-plant sister company in preparation.",
+   "stakeholders": [
+    {
+     "id": "stefan_roy",
+     "name": "Stefan Roy",
+     "role": "Group head of security",
+     "relationship": "warm",
+     "available": false
+    },
+    {
+     "id": "beatriz_alonso",
+     "name": "Beatriz Alonso",
+     "role": "Plant manager, Plant 7",
+     "relationship": "guarded",
+     "available": true
+    },
+    {
+     "id": "nadia_rahman",
+     "name": "Nadia Rahman",
+     "role": "Group finance controller",
+     "relationship": "guarded",
+     "available": true
+    },
+    {
+     "id": "owen_fitch",
+     "name": "Owen Fitch",
+     "role": "Group IT infrastructure lead",
+     "relationship": "warm",
+     "available": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "sr_roll_0",
+     "text": "Thirteen of fifteen plants are flying.",
+     "said_by": "Stefan Roy",
+     "status": "claim",
+     "learned_at_minute": 63
+    },
+    {
+     "id": "sr_roll_2",
+     "text": "Four plants fly regularly. Nine only log test flights. Plant 15 has no dock.",
+     "said_by": "Stefan Roy",
+     "status": "verified",
+     "verified_by": "flight_log_by_plant",
+     "learned_at_minute": 63
+    },
+    {
+     "id": "sr_roi_0",
+     "text": "ROI is proven, about 1.2 million euros a year saved.",
+     "said_by": "Stefan Roy",
+     "status": "claim",
+     "learned_at_minute": 66
+    },
+    {
+     "id": "sr_plants_2",
+     "text": "Plants pay a share of the security budget. Several managers resent paying for equipment they did not choose.",
+     "said_by": "Stefan Roy",
+     "status": "told",
+     "learned_at_minute": 67
+    },
+    {
+     "id": "ba_use_0",
+     "text": "It's useful at night.",
+     "said_by": "Beatriz Alonso",
+     "status": "told",
+     "learned_at_minute": 70
+    },
+    {
+     "id": "ba_other_1",
+     "text": "I hear Plant 11 never uses theirs. Their manager sees it as head office's toy and the network there is poor.",
+     "said_by": "Beatriz Alonso",
+     "status": "told",
+     "learned_at_minute": 72
+    },
+    {
+     "id": "of_weak_1",
+     "text": "Plants 11 to 14 have weak links and he had no part in the installs.",
+     "said_by": "Owen Fitch",
+     "status": "told",
+     "learned_at_minute": 76
+    },
+    {
+     "id": "of_seg_2",
+     "text": "A network segmentation project starts in four months and will cut the docks' connectivity unless exceptions are planned. Nobody has told him.",
+     "said_by": "Owen Fitch",
+     "status": "verified",
+     "verified_by": "network_plan",
+     "learned_at_minute": 78
+    },
+    {
+     "id": "of_offer_3",
+     "text": "He can give two days of a network engineer to build a pilot plan if asked with specifics.",
+     "said_by": "Owen Fitch",
+     "status": "verified",
+     "verified_by": "it_exception_template",
+     "learned_at_minute": 80
+    }
+   ],
+   "opportunities": [
+    {
+     "id": "b_renewal",
+     "title": "Renew the Aldermoor contract (14 docks)",
+     "stage": "identified",
+     "worth_up_to": null,
+     "size": null,
+     "blocker": null,
+     "evidence": [
+      "sr_roll_0",
+      "sr_roll_2"
+     ],
+     "deadline": null
+    },
+    {
+     "id": "b_idle",
+     "title": "Bring the idle plants into regular patrol",
+     "stage": "qualified",
+     "worth_up_to": 180000,
+     "size": null,
+     "blocker": {
+      "text": "The network project will cut the docks off, and nobody owns adoption",
+      "status": "open"
+     },
+     "evidence": [
+      "sr_roll_2",
+      "ba_other_1",
+      "of_weak_1",
+      "sr_plants_2",
+      "network_plan",
+      "of_offer_3"
+     ],
+     "deadline": null
+    },
+    {
+     "id": "b_sister",
+     "title": "Case study for the 40-plant sister company",
+     "stage": "identified",
+     "worth_up_to": null,
+     "size": null,
+     "blocker": null,
+     "evidence": [
+      "sr_roll_2",
+      "flight_log_by_plant"
+     ],
+     "deadline": null
+    }
+   ],
+   "offers": [
+    {
+     "id": "b_priority_support",
+     "title": "Night-time priority support for Plant 7",
+     "value": 50000,
+     "pitch_to": "Beatriz Alonso",
+     "status": "declined"
+    },
+    {
+     "id": "b_reporting",
+     "title": "Flight-log reporting by plant for finance and the insurer",
+     "value": 70000,
+     "pitch_to": "Nadia Rahman",
+     "status": "declined"
+    },
+    {
+     "id": "b_more_plants",
+     "title": "Docks for Plant 15 and two idle plants",
+     "value": 160000,
+     "pitch_to": "Stefan Roy",
+     "status": "declined"
+    }
+   ],
+   "deadlines": []
+  }
+ ],
+ "files": [
+  {
+   "id": "flight_log_force_month",
+   "title": "Flight log force month",
+   "path": "files/flight_log_force_month.csv",
+   "account": "A"
+  },
+  {
+   "id": "support_ticket_history",
+   "title": "Support ticket history",
+   "path": "files/support_ticket_history.csv",
+   "account": "A"
+  },
+  {
+   "id": "flight_log_by_plant",
+   "title": "Flight log by plant",
+   "path": "files/flight_log_by_plant.csv",
+   "account": "B"
+  },
+  {
+   "id": "network_plan",
+   "title": "Network plan",
+   "path": "files/network_plan.csv",
+   "account": "B"
+  },
+  {
+   "id": "it_exception_template",
+   "title": "It exception template",
+   "path": "files/it_exception_template.csv",
+   "account": "B"
+  }
+ ]
+}
